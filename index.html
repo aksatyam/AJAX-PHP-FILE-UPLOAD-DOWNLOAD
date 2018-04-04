@@ -1,0 +1,78 @@
+<html>
+    <head>
+        <title>File Upload/Download Using AJAX & PHP</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+            <form id="data">
+                    <input type="hidden" name="id" value="123" readonly="readonly">
+                    User Name: <input type="text" name="username" value=""><br/>
+                    Profile Image: <input name="profileImg[]" type="file" /><br/>
+                    <input type="submit" value="Submit">
+            </form>
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UID</th>
+                            <th>NAME</th> 
+                            <th>DOWLOAD DETAILS</th>
+                            <th>USER IS_ACTIVE</th>                             
+                        </tr>
+                    </thead>
+                    <tbody id="divBody">
+
+                    </tbody>
+                </table>
+            </div>
+            <style>
+                table, tr, th {
+                        border: 1px solid black;
+                    }
+                    table, tr, td {
+                        border: 1px solid black;
+                    }
+            </style>
+    </body>
+    <script>
+        $(document).ready(function(){
+            var id=document.getElementById('divBody');
+            //id.innerHTML="<tr><td>1</td><td>Ashish Kumar Satyam</td><td><a href='uploads/ajax_file.zip'>uploads/ajax.zip</a></td></tr>";
+            
+            $.ajax({
+            url: 'getAllRecord.php',
+            type: 'GET',
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (returndata) {
+                console.log(returndata);
+                id.innerHTML=returndata;
+            }
+            });
+            
+            $("form#data").submit(function(event){
+            event.preventDefault();
+            var formData = new FormData($(this)[0]);
+            $.ajax({
+            url: 'formprocessing.php',
+            type: 'POST',
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (returndata) {
+                console.log(returndata);
+                alert(returndata);
+                window.location.reload();
+            }
+            });
+
+            return false;
+            });
+        });
+    </script>
+</html>
